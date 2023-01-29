@@ -10,17 +10,15 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 @Service
 public class NasaService {
     private final RestTemplate restTemplate;
     private final Executor executor;
-    private static final Integer THREAD_NUMBER = 150;
     private final Map<Long, NasaImage> maxSolNasaImageMap = new ConcurrentHashMap<>();
 
-    public NasaService(RestTemplate restTemplate) {
-        executor = createExecutor();
+    public NasaService(RestTemplate restTemplate, Executor executor) {
+        this.executor = executor;
         this.restTemplate = restTemplate;
     }
 
@@ -58,16 +56,6 @@ public class NasaService {
         } else {
             return new NasaImage(imageSrc, res.getContentLength());
         }
-    }
-
-
-    private static Executor createExecutor() {
-        return Executors.newFixedThreadPool(THREAD_NUMBER, (r) -> {
-            var t = new Thread(r);
-            t.setDaemon(true);
-            return t;
-        });
-
     }
 
 
