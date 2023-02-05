@@ -1,4 +1,4 @@
-package com.example.nasaservice.NasaService;
+package com.example.nasaservice.dto;
 
 public record NasaImage(String url, Long size) {
 }

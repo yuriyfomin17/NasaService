@@ -3,6 +3,7 @@ package com.example.nasaservice.NasaController;
 import com.example.nasaservice.NasaService.NasaService;
 import lombok.SneakyThrows;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class NasaController {
         this.nasaService = nasaService;
     }
 
-    @GetMapping(value = "/pictures/largest/{sol}", produces = {"image/jpeg"})
-    @SneakyThrows
+    @GetMapping(value = "/pictures/largest/{sol}", produces = MediaType.IMAGE_GIF_VALUE)
+    @Cacheable("getLargestPictureURL")
     public ResponseEntity<?> getLargetPicture(@PathVariable Long sol){
         byte[] responseBody = nasaService.getLargestPictureURL(sol);
         return ResponseEntity.ok()
